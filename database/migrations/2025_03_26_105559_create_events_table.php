@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime("event_end")->nullable();  // When empty, considered 1-day event
             $table->string("location",200);
             $table->double("entry_fee")->default(0);
-            $table->integer("registered_people");
+            $table->integer("registered_people")->default(0);
             $table->foreignId("company_id")->constrained("event_companies")->cascadeOnDelete();
             $table->boolean("edit_lock")->default(false); // If someone is editing the event, others can't access.
             $table->timestamps();

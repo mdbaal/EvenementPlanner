@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class EventCompany extends Model
 {
     //
-
+    protected $guarded = [];
 
     public function events(): HasMany
     {

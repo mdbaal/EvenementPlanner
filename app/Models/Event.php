@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Event extends Model
 {
     //
+    protected $guarded = [
+        "id",
+        "registered_people",
+        "company_id",
+        "edit_lock"
+    ];
 
 
 

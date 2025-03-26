@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EventManager extends Model
 {
-
+    protected $guarded = [];
 
     public function company():BelongsTo
     {
