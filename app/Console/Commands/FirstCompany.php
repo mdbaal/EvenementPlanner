@@ -37,21 +37,27 @@ class FirstCompany extends Command
         $phone = $this->ask("Company phone number?");
         $email = $this->ask("What the company email?");
 
-
-        EventCompany::create([
+        $company = EventCompany::create([
             "name" => $name,
             "description" => $desc,
             "phone" => $phone,
             "email" => $email
         ]);
 
-        $this->info("Company created");
+        $this->info("Company created with ID: " . $company->id );
 
         $this->info("Creating admin user");
 
         $this->call("make:filament-user");
 
-        // TODO: Assign created company id to admin user.
+        $firstUser = User::all()->first();
+        $firstUser->update([
+           "company_id" => (int)$company->id
+        ]);
+        $firstUser->save();
+        $firstUser = $firstUser->fresh();
+
+        $this->info("Assigned user " . $firstUser->name . " to company ID: " . $firstUser->company_id);
 
         return 0;
     }
