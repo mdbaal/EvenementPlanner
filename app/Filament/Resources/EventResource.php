@@ -14,6 +14,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -62,7 +65,8 @@ class EventResource extends Resource
                     ->numeric()
                     ->default(0),
                 Hidden::make("company_id")
-                    ->required(),
+                    ->required()
+                    ->default(auth()->user()->company_id), //TODO: Move this to resource create event to prevent altering company id
             ]);
     }
 
@@ -70,7 +74,16 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make("title")->label("Titel")->searchable(),
+                TextColumn::make("excerpt")->label("Samenvatting"),
+                TextColumn::make("description")->label("Beschrijving"),
+                ImageColumn::make("image_url")->label("Afbeelding"),
+                TextColumn::make('event_start')->label("Start Datum")->searchable(),
+                TextColumn::make('event_end')->label("Eind Datum")->searchable(),
+                TextColumn::make('location')->label("Locatie")->searchable(),
+                TextColumn::make('entry_fee')->label("Entree Prijs")->prefix("€"),
+                TextColumn::make('registered_people')->label("Aantal Mensen"),
+                TextColumn::make('company.name')->label("Georganisseerd Door"),
             ])
             ->filters([
                 //
@@ -80,7 +93,8 @@ class EventResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->requiresConfirmation(),
                 ]),
             ]);
     }

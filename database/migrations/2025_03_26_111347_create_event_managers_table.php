@@ -20,7 +20,12 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    // TODO: Transfer this to user model.
+    // TODO: Add roles (
+    //      event_manager - can create, edit and delete events,
+    //      company_manager - In addition to even_manager can create more managers and edit company info,
+    //      administrator - Belongs to the 'first' company, is allowed to add more companies, add and edit managers and has access to all events.
+    //      )
     /**
      * Reverse the migrations.
      */
