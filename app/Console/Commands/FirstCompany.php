@@ -31,29 +31,41 @@ class FirstCompany extends Command
             $this->error("There is already a registered company");
             return 1;
         }
-        //
-        $name = $this->argument('name');
-        $desc = $this->ask("Give a short company description");
-        $phone = $this->ask("Company phone number?");
-        $email = $this->ask("What the company email?");
+
+        $name = null;
+        $desc = null;
+        $email = null;
+
+        while($name == null)
+            $name = $this->ask("What is the company called?");
+
+        while($desc == null)
+            $desc = $this->ask("Describe the company");
+
+        while($email == null)
+            $email = $this->ask("What the company's email?");
+
+        $phone = $this->ask("What is the company's phone number? (Press enter to skip)");
 
         $company = EventCompany::create([
             "name" => $name,
             "description" => $desc,
             "phone" => $phone,
-            "email" => $email
+            "email" => $email,
         ]);
 
         $this->info("Company created with ID: " . $company->id );
 
-        $this->info("Creating admin user");
+        $this->info("Creating admin user...");
 
         $this->call("make:filament-user");
 
         $firstUser = User::all()->first();
         $firstUser->update([
-           "company_id" => (int)$company->id
+           "company_id" => (int)$company->id,
+           "role" => 2 // Set the first user to administrator
         ]);
+
         $firstUser->save();
         $firstUser = $firstUser->fresh();
 
