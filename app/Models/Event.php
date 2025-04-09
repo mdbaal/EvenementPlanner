@@ -14,8 +14,6 @@ class Event extends Model
         "edit_lock"
     ];
 
-
-
     public function company(): BelongsTo{
         return $this->belongsTo(EventCompany::class);
     }

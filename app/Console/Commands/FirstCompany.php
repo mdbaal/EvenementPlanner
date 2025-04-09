@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\EventCompany;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class FirstCompany extends Command
 {
@@ -31,6 +33,22 @@ class FirstCompany extends Command
             $this->error("There is already a registered company");
             return 1;
         }
+
+        // Create roles
+        $manager = Role::create(['name' => 'manager']);
+        $companyManager = Role::create(['name' => 'company-manager']);
+        $administrator = Role::create(['name' => 'administrator']);
+
+        $manageEvents = Permission::create(['name' => "manage events"]);
+        $manageCompany = Permission::create(['name' => "manage company"]);
+        $manageAll = Permission::create(['name' => "manage all"]);
+
+        $manager->givePermissionTo($manageEvents);
+
+        $companyManager->givePermissionTo($manageEvents);
+        $companyManager->givePermissionTo($manageCompany);
+
+        $administrator->givePermissionTo($manageAll);
 
         $name = null;
         $desc = null;
@@ -63,8 +81,9 @@ class FirstCompany extends Command
         $firstUser = User::all()->first();
         $firstUser->update([
            "company_id" => (int)$company->id,
-           "role" => 2 // Set the first user to administrator
         ]);
+
+        $firstUser->assignRole($administrator);
 
         $firstUser->save();
         $firstUser = $firstUser->fresh();

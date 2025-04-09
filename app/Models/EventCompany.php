@@ -16,8 +16,7 @@ class EventCompany extends Model
         return $this->hasMany(Event::class);
     }
 
-    public function managers(): HasMany
-    {
-        return $this->hasMany(EventManager::class);
+    public function users(): HasMany{
+        return $this->hasMany(User::class);
     }
 }
