@@ -6,6 +6,7 @@ use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource\RelationManagers;
 use App\Models\Event;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -44,16 +45,16 @@ class EventResource extends Resource
                     ->image()
                     ->directory("event-images")
                     ->visibility('private'),
-                DateTimePicker::make('event_start')
+                DatePicker::make('event_start')
                     ->required()
                     ->format('d/m/Y')
-                    ->displayFormat('d/m/Y H-i')
+                    ->displayFormat('d/m/Y')
                     ->seconds(false)
                     ->weekStartsOnMonday()
                     ->closeOnDateSelection(),
-                DateTimePicker::make('event_end')
+                DatePicker::make('event_end')
                     ->format('d/m/Y')
-                    ->displayFormat('d/m/Y H-i')
+                    ->displayFormat('d/m/Y')
                     ->seconds(false)
                     ->weekStartsOnMonday()
                     ->closeOnDateSelection(),
