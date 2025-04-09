@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('administrator');
+        return $user->hasAnyRole(['administrator','company-manager']);
     }
 
     /**
